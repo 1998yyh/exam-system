@@ -10,12 +10,13 @@ import { AnswerService } from './answer.service';
         name: 'EXAM_SERVICE',
         transport: Transport.TCP,
         options: {
-          port: 8888,
-        },
-      },
-    ]),
+          host: 'localhost',
+          port: 3001
+        }
+      }
+    ])
   ],
   controllers: [AnswerController],
   providers: [AnswerService],
-})
+}
 export class AnswerModule {}
