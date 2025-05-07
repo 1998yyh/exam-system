@@ -20,4 +20,25 @@ model User {
   email String @db.VarChar(50)
   createTime DateTime @default(now())
   updateTime DateTime @updatedAt
+
+  exams  Exam[]
+}
+
+
+// npx prisma migrate dev --name exam
+// 检测你的 Prisma schema 文件中的更改
+// 创建一个新的迁移文件，命名为 "exam"
+// 将这个迁移应用到你的数据库
+// 重新生成 Prisma 客户端
+model Exam {
+  id  Int @id @default(autoincrement())
+  name String @db.VarChar(50)
+  isPublish Boolean @default(false)
+  isDelete Boolean @default(false)
+  content String @db.Text 
+  createTime DateTime @default(now())
+  updateTime DateTime @updatedAt
+
+  createUserId Int
+  createUser     User  @relation(fields: [createUserId], references: [id])
 }
