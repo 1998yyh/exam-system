@@ -4,7 +4,7 @@ import { RedisService } from '@app/redis';
 import { RequireLogin, UserInfo } from '@app/common';
 import { ExamAddDto } from './dto/exam-add.dto';
 
-@Controller()
+@Controller('exam')
 export class ExamController {
   @Inject(RedisService)
   private readonly redisService: RedisService;
@@ -21,5 +21,17 @@ export class ExamController {
   @RequireLogin()
   async add(@Body() dto: ExamAddDto, @UserInfo('userId') userId: number) {
     return this.examService.add(dto, userId);
+  }
+
+  @Post('list')
+  @RequireLogin()
+  async list(@UserInfo('userId') userId: number) {
+    return this.examService.list(userId);
+  }
+
+  @Post('delete')
+  @RequireLogin()
+  async delete(@UserInfo('userId') userId: number, @Body('id') id: number) {
+    return this.examService.delete(userId, id);
   }
 }

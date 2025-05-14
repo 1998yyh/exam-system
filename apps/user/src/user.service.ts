@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { RegisterUserDto } from './dto/regiser-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { JwtService } from '@nestjs/jwt';
 import { UpdateUserPasswordDto } from './dto/update-password.dto';
 
 @Injectable()
@@ -19,9 +18,6 @@ export class UserService {
 
   @Inject(PrismaService)
   private prisma: PrismaService;
-
-  @Inject(JwtService)
-  private jwtService: JwtService;
 
   private logger = new Logger();
 
@@ -120,5 +116,15 @@ export class UserService {
 
   getHello(): string {
     return 'Hello World!';
+  }
+
+  async getUserList() {
+    const list = await this.prisma.user.findMany({
+      select: {
+        username: true,
+      },
+    });
+
+    return list.map((item) => item.username);
   }
 }

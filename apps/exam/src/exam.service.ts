@@ -10,6 +10,7 @@ export class ExamService {
     return 'Hello World!';
   }
 
+  // 添加考试
   async add(dto: ExamAddDto, userId: number) {
     return await this.prismaService.exam.create({
       data: {
@@ -20,6 +21,29 @@ export class ExamService {
             id: userId,
           },
         },
+      },
+    });
+  }
+
+  // 获取考试列表
+  async list(userId: number) {
+    return this.prismaService.exam.findMany({
+      where: {
+        createUserId: userId,
+        isDelete: false,
+      },
+    });
+  }
+
+  // 删除考试
+  async delete(userId: number, id: number) {
+    return this.prismaService.exam.update({
+      where: {
+        id,
+        createUserId: userId,
+      },
+      data: {
+        isDelete: true,
       },
     });
   }

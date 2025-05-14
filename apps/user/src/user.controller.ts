@@ -87,4 +87,9 @@ export class UserController {
   async updatePassword(@Body() passwordDto: UpdateUserPasswordDto) {
     return await this.userService.updatePassword(passwordDto);
   }
+
+  @Post('list')
+  async getUserList() {
+    return await this.userService.getUserList();
+  }
 }
