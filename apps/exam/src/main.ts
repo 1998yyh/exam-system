@@ -15,6 +15,11 @@ async function bootstrap() {
 
   app.startAllMicroservices();
 
+  app.use((req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    next();
+  });
+
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   await app.listen(3002);

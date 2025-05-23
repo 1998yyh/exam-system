@@ -1,6 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ExamAddDto } from './dto/exam-add.dto';
 import { PrismaService } from '@app/prisma';
+import { ExamSaveDto } from './dto/exam-save.dto';
 
 @Injectable()
 export class ExamService {
@@ -32,11 +33,17 @@ export class ExamService {
         createUserId: userId,
         isDelete: false,
       },
+      omit: {
+        isDelete: true,
+      },
     });
   }
 
   // 删除考试
-  async delete(userId: number, id: number) {
+  async delete(id: number, userId: number) {
+    if (!id) {
+      throw new HttpException('id is required', HttpStatus.BAD_REQUEST);
+    }
     return this.prismaService.exam.update({
       where: {
         id,
@@ -45,6 +52,28 @@ export class ExamService {
       data: {
         isDelete: true,
       },
+    });
+  }
+
+  // 保存考试
+  async save(dto: ExamSaveDto) {
+    return await this.prismaService.exam.update({
+      where: { id: dto.id },
+      data: {
+        content: dto.content,
+      },
+    });
+  }
+
+  // 发布考试
+  async publish(id: number, userId: number) {
+    if (!id) {
+      throw new HttpException('id is required', HttpStatus.BAD_REQUEST);
+    }
+
+    return await this.prismaService.exam.update({
+      where: { id, createUserId: userId },
+      data: { isPublish: true },
     });
   }
 }
