@@ -46,6 +46,7 @@ export class UserController {
     });
     return '发送成功';
   }
+
   @Get('login-captcha')
   async sendLoginCode(@Query('address') address: string) {
     const code = Math.random().toString().slice(2, 8);
@@ -57,6 +58,24 @@ export class UserController {
       subject: '注册验证码',
       html: `<p>你的注册验证码是 ${code}</p>`,
     });
+    return '发送成功';
+  }
+
+  @Get('update-password/captcha')
+  async sendUpdatePasswordCode(@Query('address') address: string) {
+    const code = Math.random().toString().slice(2, 8);
+    await this.redisService.set(
+      `update_password_captcha_${address}`,
+      code,
+      5 * 60,
+    );
+
+    await this.emailService.sendMail({
+      to: address,
+      subject: '修改密码验证码',
+      html: `<p>你的修改密码验证码是 ${code}</p>`,
+    });
+
     return '发送成功';
   }
 
@@ -83,7 +102,7 @@ export class UserController {
     };
   }
 
-  @Post('update_password')
+  @Post('update-password')
   async updatePassword(@Body() passwordDto: UpdateUserPasswordDto) {
     return await this.userService.updatePassword(passwordDto);
   }

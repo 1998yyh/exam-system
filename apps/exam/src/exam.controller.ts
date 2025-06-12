@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ExamService } from './exam.service';
 import { RedisService } from '@app/redis';
 import { RequireLogin, UserInfo } from '@app/common';
@@ -26,14 +34,14 @@ export class ExamController {
 
   @Post('list')
   @RequireLogin()
-  async list(@UserInfo('userId') userId: number) {
-    return this.examService.list(userId);
+  async list(@UserInfo('userId') userId: number, @Query('bin') bin: string) {
+    return this.examService.list(userId, bin);
   }
 
-  @Post('delete')
+  @Post('delete/:id')
   @RequireLogin()
-  async delete(@Body('id') id: number, @UserInfo('userId') userId: number) {
-    return this.examService.delete(userId, id);
+  async delete(@UserInfo('userId') userId: number, @Param('id') id: string) {
+    return this.examService.delete(userId, +id);
   }
 
   @Post('save')
@@ -42,9 +50,9 @@ export class ExamController {
     return this.examService.save(dto);
   }
 
-  @Post('publish')
+  @Post('publish/:id')
   @RequireLogin()
-  async publish(@Body('id') id: number, @UserInfo('userId') userId: number) {
-    return this.examService.publish(id, userId);
+  async publish(@UserInfo('userId') userId: number, @Param('id') id: string) {
+    return this.examService.publish(userId, +id);
   }
 }

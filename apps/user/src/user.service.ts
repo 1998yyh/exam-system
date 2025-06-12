@@ -69,14 +69,17 @@ export class UserService {
     });
 
     if (!foundUser) {
+      console.log(111);
       throw new HttpException('用户不存在', HttpStatus.BAD_REQUEST);
     }
 
     if (foundUser.password !== loginUser.password) {
+      console.log(2222);
       throw new HttpException('密码错误', HttpStatus.BAD_REQUEST);
     }
 
     delete foundUser.password;
+
     return foundUser;
   }
 

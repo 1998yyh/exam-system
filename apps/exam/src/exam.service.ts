@@ -27,20 +27,22 @@ export class ExamService {
   }
 
   // 获取考试列表
-  async list(userId: number) {
+  async list(userId: number, bin: string) {
     return this.prismaService.exam.findMany({
-      where: {
-        createUserId: userId,
-        isDelete: false,
-      },
-      omit: {
-        isDelete: true,
-      },
+      where:
+        bin !== undefined
+          ? {
+              createUserId: userId,
+              isDelete: true,
+            }
+          : {
+              createUserId: userId,
+            },
     });
   }
 
   // 删除考试
-  async delete(id: number, userId: number) {
+  async delete(userId: number, id: number) {
     if (!id) {
       throw new HttpException('id is required', HttpStatus.BAD_REQUEST);
     }
@@ -66,7 +68,7 @@ export class ExamService {
   }
 
   // 发布考试
-  async publish(id: number, userId: number) {
+  async publish(userId: number, id: number) {
     if (!id) {
       throw new HttpException('id is required', HttpStatus.BAD_REQUEST);
     }
