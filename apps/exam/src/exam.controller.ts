@@ -50,6 +50,12 @@ export class ExamController {
     return this.examService.save(dto);
   }
 
+  @Post('find/:id')
+  @RequireLogin()
+  async find(@Param('id') id: string) {
+    return this.examService.find(+id);
+  }
+
   @Post('publish/:id')
   @RequireLogin()
   async publish(@UserInfo('userId') userId: number, @Param('id') id: string) {

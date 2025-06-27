@@ -78,4 +78,21 @@ export class ExamService {
       data: { isPublish: true },
     });
   }
+
+  // findMany
+
+  async find(id: number) {
+    return this.prismaService.exam.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async update(id: number, content: string) {
+    return await this.prismaService.exam.update({
+      where: { id },
+      data: { content },
+    });
+  }
 }
