@@ -4,6 +4,7 @@ import { AnswerController } from './answer.controller';
 import { AnswerService } from './answer.service';
 import { PrismaModule } from '@app/prisma';
 import { AuthGuard, CommonModule } from '@app/common';
+import { ExcelModule } from '@app/excel';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
@@ -20,6 +21,7 @@ import { APP_GUARD } from '@nestjs/core';
     ]),
     PrismaModule,
     CommonModule,
+    ExcelModule,
   ],
   controllers: [AnswerController],
   providers: [

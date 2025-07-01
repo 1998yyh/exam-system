@@ -42,10 +42,10 @@
       "@app/common/*": [
         "libs/common/src/*"
       ],
-      "Y/excel": [
+      "@app/excel": [
         "libs/excel/src"
       ],
-      "Y/excel/*": [
+      "@app/excel/*": [
         "libs/excel/src/*"
       ]
     }
